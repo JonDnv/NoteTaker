@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cuid": "^2.1.8",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "uniqid": "^5.2.0"
   }
 }

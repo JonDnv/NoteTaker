@@ -1,16 +1,27 @@
 const fs = require("fs");
-
-const noteData = require("../db/db.json");
+const uniqid = require("uniqid");
 
 module.exports = (app) => {
-  app.get("/api/notes", (req, res) => res.json("../db/db.json"));
+  let noteData = require(__dirname + "/../db/db.json");
+
+  app.get("/api/notes", (req, res) => {
+    res.json(noteData);
+  });
 
   app.post("/api/notes", (req, res) => {
-    for (let i = 0; i < noteData.length; i++) {
-      noteData[i].id = i + 1;
-    }
+    let newNote = req.body;
+    newNote.id = uniqid();
 
-    noteData.push(req.body);
-    res.json(true);
+    noteData.push(newNote);
+
+    const rawData = JSON.stringify(noteData);
+
+    fs.writeFile(__dirname + "/../db/db.json", rawData, (err) => {
+      if (err) throw err;
+    });
+    res.end();
   });
+
+  
+
 };
