@@ -22,6 +22,20 @@ module.exports = (app) => {
     res.end();
   });
 
-  
+  app.delete("/api/notes/:id", (req, res) => {
+    const noteId = req.params.id;
 
+    let filtered = noteData.filter(function (note) {
+      return note.id != noteId;
+    });
+
+    newNoteData = JSON.stringify(filtered);
+    noteData = filtered;
+
+    fs.writeFileSync(__dirname + "/../db/db.json", newNoteData, (err) => {
+      if (err) throw err;
+    });
+
+    res.end();
+  });
 };
